@@ -9,8 +9,7 @@ function ProtectedRoute({children}) {
   const getValidUser = async () => {
     try {
       const response = await GetCurrentUser();
-      console.log(response);
-      // navigate('/login');
+      if(!response) navigate('/login');
     } catch(error) {
       console.log(error);
     }
