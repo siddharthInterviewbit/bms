@@ -5,10 +5,18 @@ import { LoginUser } from '../../api/users';
 function Login() {
 
   const onFinish = async (values) => {
-    console.log(values);
-    const response = await LoginUser(values);
-    localStorage.setItem('token', response.token);
-    console.log(response);
+    try {
+      const response = await LoginUser(values);
+      if (response.success) {
+        localStorage.setItem('token', response.token);
+        window.location.href = '/';
+        console.log(response);
+      } else {
+        console.log(response.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
