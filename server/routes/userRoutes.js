@@ -65,7 +65,8 @@ router.post('/login', async (req, res) => {
       success: true,
       message: "Logged in",
       token: token
-    })
+    });
+
 
   } catch (err) {
     console.log(err);
@@ -79,7 +80,7 @@ router.get('/get-current-user',  authMiddleware, async (req, res) => {
     success: true,
     message: "You are authorised",
     data: user
-  })
+  });
 })
 
 
