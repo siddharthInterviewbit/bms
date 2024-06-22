@@ -13,7 +13,7 @@ router.post('/register', async (req, res) => {
       res.send({
         success: false,
         message: "User already exists"
-      })
+      });
       return;
     }
     const salt = await bcrypt.genSalt(10);
@@ -26,7 +26,7 @@ router.post('/register', async (req, res) => {
     res.send({
       success: true,
       message: "user created successfully"
-    })
+    });
   } catch (err) {
     console.log(err);
     res.send({
@@ -34,7 +34,6 @@ router.post('/register', async (req, res) => {
       message: err
     })
   }
-
 })
 
 router.post('/login', async (req, res) => {
@@ -81,7 +80,7 @@ router.get('/get-current-user',  authMiddleware, async (req, res) => {
     message: "You are authorised",
     data: user
   });
+  
 })
-
 
 module.exports = router;

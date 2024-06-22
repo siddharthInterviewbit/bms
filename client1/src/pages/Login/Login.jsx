@@ -3,6 +3,7 @@ import { Button, Form, Input } from 'antd';
 import { LoginUser } from '../../api/users';
 import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import { message } from "antd";
 
 function Login() {
   const navigate = useNavigate();
@@ -13,8 +14,10 @@ function Login() {
         localStorage.setItem('token', response.token);
         window.location.href = '/';
         console.log(response);
+        message.success("user Logged in")
       } else {
         console.log(response.message);
+        message.error(response.message);
       }
     } catch (error) {
       console.log(error);
