@@ -1,24 +1,27 @@
 
 import { useEffect, useState } from "react";
 import { getAllMovies } from "../../api/movies";
-import { Table } from "antd";
+import MovieForm from "./MovieForm";
+
+import { Table, Button } from "antd";
 
 function MovieList() {
   const [movies, setMovies] = useState([]);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const getData = async () => {
     const response = await getAllMovies();
-    const allMovies = response.data;
+    let allMovies = response.data;
+    allMovies = allMovies.map(function (item) {
+      return { ...item, key: `movie${item._id}` };
+    })
     setMovies(
-      allMovies.map(function (item) {
-        return { ...item, key: `movie${item._id}` };
-      })
+      allMovies
     );
   }
 
   useEffect(() => {
     getData();
-  })
+  }, [])
 
   const tableHeadings = [
     {
@@ -64,10 +67,28 @@ function MovieList() {
   ]
 
   return (
-    <Table columns={tableHeadings} dataSource={movies} />
+    <>
+      <div className="d-flex justify-content-end">
+        <Button
+          onClick={() => {
+            setIsModalOpen(true);
+          }}
+        >
+          Add Movie
+        </Button>
+      </div>
+        {
+          isModalOpen &&
+          <MovieForm
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+          
+          />
+        }
+        <Table columns={tableHeadings} dataSource={movies} />
+    </>
   )
 
 }
-
 
 export default MovieList;

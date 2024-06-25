@@ -3,7 +3,8 @@ const app = express();
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
 const movieRoutes = require('./routes/movieRoutes');
-
+const theatreRoutes = require('./routes/theatreRoutes');
+const showRoutes = require('./routes/showRoutes');
 
 const dburl = "mongodb+srv://siddharth:FOrYp6GZmOTZWgh9@cluster0.bpjvihj.mongodb.net/scaler?retryWrites=true&w=majority&appName=Cluster0";
 app.use(express.json());
@@ -14,6 +15,8 @@ mongoose.connect(dburl).then((function () {
 
 app.use('/api/users', userRoutes);
 app.use('/api/movies', movieRoutes);
+app.use('/api/theatres', theatreRoutes);
+app.use('/api/shows', showRoutes);
 
 app.listen(8081, () => {
   console.log("server is connected");
