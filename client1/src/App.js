@@ -3,6 +3,8 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import Profile from "./pages/Profile"
+import SingleMovie from './pages/SingleMovie';
+
 import ProtectedRoute from './components/ProtectedRoute';
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -15,6 +17,12 @@ function App() {
           <Route path="/" element={
             <ProtectedRoute>
               <Home />
+            </ ProtectedRoute>
+          } />
+
+          <Route path="/movie/:id" element={
+            <ProtectedRoute>
+              <SingleMovie />
             </ ProtectedRoute>
           } />
 
