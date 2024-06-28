@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import Profile from "./pages/Profile"
 import SingleMovie from './pages/SingleMovie';
+import BookShow from "./pages/BookShow";
 
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -37,7 +38,8 @@ function App() {
               <Admin />
             </ ProtectedRoute>
           } />
-          <Route path="/login" element={ <Login /> } />
+          <Route path="/login" element={<Login />} />
+          <Route path="/book-show/:id" element={<ProtectedRoute><BookShow /></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
     </div>

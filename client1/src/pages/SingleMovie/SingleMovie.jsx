@@ -3,11 +3,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getMovieById } from "../../api/movies";
 import { message, Input, Divider, Row, Col } from "antd";
 import { CalendarOutlined } from "@ant-design/icons";
+import { getAllTheatresByMovie } from "../../api/shows";
+
 import moment from "moment";
 
 function SingleMovie() {
 
   const [movie, setMovie] = useState([]);
+  const [theatres, setTheatres] = useState([]);
+
   const navigate = useNavigate();
   const params = useParams();
   const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
@@ -31,10 +35,26 @@ function SingleMovie() {
     }
   };
 
+  const getAllTheatres = async () => {
+    try {
+      const response = await getAllTheatresByMovie({ movie: params.id, date });
+      if (response.success) {
+        setTheatres(response.data);
+      } else {
+        message.error(response.message);
+      }
+    } catch (err) {
+      message.err(err.message);
+    }
+  };
+
   useEffect(() => {
     getData();
-  }, [])
-
+  }, []);
+  
+  useEffect(() => {
+    getAllTheatres();
+  }, [date]);
 
   return (
     <div className="inner-container">
@@ -72,6 +92,48 @@ function SingleMovie() {
                 />
               </div>
             </div>
+          </div>
+      )}
+      
+      {theatres.length > 0 && (
+          <div className="theatre-wrapper mt-3 pt-3">
+            <h2>Theatres</h2>
+            {theatres.map((theatre) => {
+              return (
+                <div key={theatre._id}>
+                  <Row gutter={24} key={theatre._id}>
+                    <Col xs={{ span: 24 }} lg={{ span: 8 }}>
+                      <h3>{theatre.name}</h3>
+                      <p>{theatre.address}</p>
+                    </Col>
+                    <Col xs={{ span: 24 }} lg={{ span: 16 }}>
+                      <ul className="show-ul">
+                        {theatre.shows
+                          .sort(
+                            (a, b) =>
+                              moment(a.time, "HH:mm") - moment(b.time, "HH:mm")
+                          )
+                          .map((singleShow) => {
+                            return (
+                              <li
+                                key={singleShow._id}
+                                onClick={() =>
+                                  navigate(`/book-show/${singleShow._id}`)
+                                }
+                              >
+                                {moment(singleShow.time, "HH:mm").format(
+                                  "hh:mm A"
+                                )}
+                              </li>
+                            );
+                          })}
+                      </ul>
+                    </Col>
+                  </Row>
+                  <Divider />
+                </div>
+              );
+            })}
           </div>
         )}
 
